@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PPID — Formulir Layanan PPID</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap');
+.ppid-wrap{--bg:#ffffff; --ink:#131a10; --green:#1f7a43; --green-dk:#0b3d20;
+    --gold:#c69a4e; --card:#ffffff; --line:#e2e8db; --muted:#68765f;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+.ppid-wrap *{box-sizing:border-box;}
+.ppid-wrap{margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif;}
+.ppid-wrap h1,.ppid-wrap h2,.ppid-wrap .mn{font-family:'Manrope',sans-serif;}
+.ppid-wrap .page-title h1{font-size:clamp(20px,3vw,27px); margin:0 0 4px;}
+.ppid-wrap .page-title p{color:var(--muted); font-size:13px; margin:0 0 24px;}
+.ppid-wrap .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:32px;}
+@media(max-width:900px){.ppid-wrap .stats{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:460px){.ppid-wrap .stats{grid-template-columns:1fr 1fr;}}
+.ppid-wrap .stat{background:var(--green-dk); border:1px solid var(--green-dk); border-radius:12px; padding:16px 18px; box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.ppid-wrap .stat .num{font-family:'Manrope',sans-serif; font-size:clamp(22px,2.4vw,28px); font-weight:800; color:#ffffff; font-variant-numeric:tabular-nums;}
+.ppid-wrap .stat .lbl{font-size:11.5px; color:#cfe3d4; margin-top:2px;}
+.ppid-wrap .cat{background:#eef5ea; border:1px solid #d5e3cd; border-radius:14px; padding:22px clamp(16px,2.5vw,28px); margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.ppid-wrap .cat-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; flex-wrap:wrap; gap:8px;}
+.ppid-wrap .cat-head h2{font-size:16px; margin:0; display:flex; align-items:center; gap:8px;}
+.ppid-wrap .cat-tag{font-size:10.5px; font-weight:700; color:var(--green-dk); background:#ffffff; padding:3px 9px; border-radius:999px; white-space:nowrap;}
+.ppid-wrap .cat-desc{font-size:12px; color:var(--muted); margin:2px 0 16px;}
+.ppid-wrap .grp{margin-bottom:14px;}
+.ppid-wrap .grp-lbl{font-size:12px; font-weight:600; margin-bottom:8px;}
+.ppid-wrap .chips{display:flex; flex-wrap:wrap; gap:7px;}
+.ppid-wrap .chip{background:#ffffff; border:1px solid #d5e3cd; color:var(--green-dk);
+    font-size:12px; font-weight:600; padding:6px 13px; border-radius:8px; text-decoration:none;}
+.ppid-wrap .chip:hover{background:var(--green); color:#fff; border-color:var(--green);}
+.ppid-wrap .dd{position:relative;}
+.ppid-wrap .dd summary{list-style:none; cursor:pointer; display:block; user-select:none;}
+.ppid-wrap .dd summary::-webkit-details-marker{display:none;}
+.ppid-wrap .dd summary::after{content:" ▾"; font-size:9px;}
+.ppid-wrap .dd-menu{position:absolute; top:calc(100% + 4px); left:0; z-index:5; min-width:100%;
+    background:#fff; border:1px solid #d5e3cd; border-radius:8px; padding:4px;
+    box-shadow:0 4px 12px rgba(0,0,0,.12); display:flex; flex-direction:column; gap:4px;}
+.ppid-wrap .dd-menu .chip{white-space:nowrap; text-align:center; border:0;}
+.ppid-wrap .steps{display:flex; gap:16px; flex-wrap:wrap;}
+.ppid-wrap .step{flex:1 1 180px; min-width:160px;}
+.ppid-wrap .step .n{font-family:'Manrope',sans-serif; font-weight:800; font-size:22px; color:var(--green);}
+.ppid-wrap .step h3{font-size:13px; margin:6px 0 4px;}
+.ppid-wrap .step p{font-size:11.5px; color:var(--muted); margin:0;}
+.ppid-wrap .contact{display:flex; gap:12px 28px; flex-wrap:wrap; align-items:center; font-size:12.5px; line-height:1.4; margin-top:20px; padding-top:16px; border-top:1px solid #d5e3cd;}
+.ppid-wrap .cat-head + .steps{margin-top:16px;}
+.ppid-wrap .steps{gap:20px 16px;}
+.ppid-wrap .contact span{display:inline-flex; align-items:center; gap:8px; margin:0; padding:0; line-height:1.4;}
+.ppid-wrap .contact svg{width:16px; height:16px; flex:0 0 16px; stroke:var(--green); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+.ppid-wrap .contact a{color:var(--green-dk); text-decoration:none; font-weight:600;}
+.ppid-wrap .contact a:hover{text-decoration:underline;}
+.ppid-wrap .note{font-size:12.5px; color:var(--muted); background:#ffffff; border-left:3px solid var(--green); border-radius:8px; padding:14px 16px; line-height:1.6;}
+.ppid-wrap .fs{border:1px dashed #c4d6ba; border-radius:10px; padding:14px 16px 16px; margin:0 0 14px; background:#fff;}
+.ppid-wrap .fs legend{font:700 13px 'Manrope',sans-serif; color:var(--green-dk); padding:0 6px;}
+.ppid-wrap .fgrid{display:grid; grid-template-columns:1fr 1fr; gap:12px 14px;}
+@media(max-width:700px){.ppid-wrap .fgrid{grid-template-columns:1fr;}}
+.ppid-wrap .fld label{display:block; font-size:12px; font-weight:600; margin-bottom:5px;}
+.ppid-wrap .fld label b{color:#c0392b;}
+.ppid-wrap .fld input,.ppid-wrap .fld select,.ppid-wrap .fld textarea{width:100%; font:13px 'Inter',sans-serif; padding:10px 12px; border:1px solid #cdd8c5; border-radius:8px; background:#fff; color:var(--ink);}
+.ppid-wrap .fld textarea{min-height:90px; resize:vertical;}
+.ppid-wrap .fld input:focus,.ppid-wrap .fld select:focus,.ppid-wrap .fld textarea:focus{outline:2px solid var(--green); outline-offset:0; border-color:var(--green);}
+.ppid-wrap .fld small{display:block; font-size:11px; color:var(--muted); margin-top:4px;}
+.ppid-wrap .full{grid-column:1/-1;}
+.ppid-wrap .hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;}
+.ppid-wrap .fbtns{display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;}
+.ppid-wrap .btn{font:700 13px 'Inter',sans-serif; padding:11px 20px; border-radius:8px; border:0; cursor:pointer;}
+.ppid-wrap .btn.pri{background:var(--green-dk); color:#fff;}
+.ppid-wrap .btn.sec{background:#fff; color:var(--green-dk); border:1px solid #cdd8c5;}
+.ppid-wrap .btn:disabled{opacity:.6; cursor:wait;}
+.ppid-wrap #fStatus{font-size:13px; margin:0 0 12px; padding:10px 14px; border-radius:8px; display:none;}
+.ppid-wrap #fStatus.ok{display:block; background:#e3f3e8; color:#0b3d20;}
+.ppid-wrap #fStatus.err{display:block; background:#fdeaea; color:#8a1f1f;}
+.ppid-wrap .stat{position:relative; overflow:hidden; transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;}
+.ppid-wrap .stat .num{display:inline-block; transform-origin:left center; transition:transform .25s ease, color .25s ease;}
+.ppid-wrap .stat::after{content:""; position:absolute; left:0; bottom:0; height:3px; width:0; background:var(--gold); transition:width .35s ease;}
+.ppid-wrap .step{padding:10px 12px; margin:-10px -12px; border-radius:10px; transition:transform .25s ease, background-color .25s ease, box-shadow .25s ease;}
+.ppid-wrap .step .n{display:inline-block; transform-origin:left center; transition:transform .25s ease, color .25s ease;}
+@media (hover:hover){.ppid-wrap .stat:hover{transform:translateY(-3px); background:#0f4a27; box-shadow:0 8px 18px rgba(11,61,32,.22);}
+.ppid-wrap .stat:hover .num{transform:scale(1.06); color:var(--gold);}
+.ppid-wrap .stat:hover::after{width:100%;}
+.ppid-wrap .step:hover{transform:translateY(-2px); background:#fff; box-shadow:0 6px 14px rgba(11,61,32,.10);}
+.ppid-wrap .step:hover .n{transform:translateX(2px) scale(1.08); color:var(--gold);}}
+@media (hover:none){.ppid-wrap .stat:active{transform:translateY(-3px); background:#0f4a27; box-shadow:0 8px 18px rgba(11,61,32,.22);}
+.ppid-wrap .stat:active .num{transform:scale(1.06); color:var(--gold);}
+.ppid-wrap .stat:active::after{width:100%;}
+.ppid-wrap .step:active{transform:translateY(-2px); background:#fff; box-shadow:0 6px 14px rgba(11,61,32,.10);}
+.ppid-wrap .step:active .n{transform:translateX(2px) scale(1.08); color:var(--gold);}}
+.ppid-wrap #formulir{max-width:900px; margin-left:auto; margin-right:auto;}
+.ppid-wrap .org-top{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,400px) minmax(0,1fr); gap:0 56px; align-items:start;}
+.ppid-wrap .org-left,.ppid-wrap .org-right{position:relative;}
+.ppid-wrap .org-left::after{content:""; position:absolute; left:100%; top:56px; width:56px; border-top:2px dashed var(--green-dk);}
+.ppid-wrap .org-right::before{content:""; position:absolute; right:100%; top:192px; width:56px; border-top:2px solid var(--green-dk);}
+.ppid-wrap .org-panel{background:#fff; border:1px solid #d5e3cd; border-radius:12px; padding:12px;}
+.ppid-wrap .org-pt{font:800 14px 'Manrope',sans-serif; color:var(--green-dk); margin:2px 2px 10px;}
+.ppid-wrap .org-spine{display:flex; flex-direction:column;}
+.ppid-wrap .org-lead{position:relative; min-height:112px; display:flex; align-items:center; gap:14px; background:var(--green-dk); color:#fff; border-radius:12px; padding:14px 16px;}
+.ppid-wrap .org-lead + .org-lead{margin-top:24px;}
+.ppid-wrap .org-lead + .org-lead::before{content:""; position:absolute; left:50%; top:-24px; height:24px; border-left:2px solid var(--green-dk);}
+.ppid-wrap .org-lead img{width:72px; height:72px; flex:0 0 72px; border-radius:50%; object-fit:cover; border:2px solid var(--gold); background:#fff;}
+.ppid-wrap .org-role{font-size:12px; color:var(--gold); font-weight:600; margin-bottom:2px;}
+.ppid-wrap .org-name{font:800 15px/1.3 'Manrope',sans-serif;}
+.ppid-wrap .org-pos{font-size:12px; color:#cfe3d4; margin-top:3px; line-height:1.4;}
+.ppid-wrap .org-person{display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px; background:#eef5ea;}
+.ppid-wrap .org-person + .org-person{margin-top:8px;}
+.ppid-wrap .org-person img{width:44px; height:44px; flex:0 0 44px; border-radius:50%; object-fit:cover; border:2px solid var(--green);}
+.ppid-wrap .org-pn{font-size:12.5px; font-weight:600; line-height:1.3;}
+.ppid-wrap .org-pj{font-size:11px; color:var(--muted); line-height:1.35; margin-top:1px;}
+.ppid-wrap .org-bd{border:1px solid #d5e3cd; border-radius:8px; background:#eef5ea;}
+.ppid-wrap .org-bd + .org-bd{margin-top:6px;}
+.ppid-wrap .org-bd summary{list-style:none; cursor:pointer; display:block; padding:9px 34px 9px 12px; position:relative; user-select:none;}
+.ppid-wrap .org-bd summary::-webkit-details-marker{display:none;}
+.ppid-wrap .org-bd summary::after{content:"▾"; position:absolute; right:12px; top:50%; margin-top:-8px; font-size:12px; color:var(--green-dk); transition:transform .2s ease;}
+.ppid-wrap .org-bd[open] summary::after{transform:rotate(180deg);}
+.ppid-wrap .org-bd summary:focus-visible{outline:2px solid var(--green); outline-offset:1px; border-radius:8px;}
+.ppid-wrap .org-bn{display:block; font:700 12.5px/1.3 'Manrope',sans-serif; color:var(--green-dk);}
+.ppid-wrap .org-bh{display:block; font-size:11.5px; color:var(--muted); margin-top:1px;}
+.ppid-wrap .org-bb{padding:0 12px 12px; font-size:12px; line-height:1.4;}
+.ppid-wrap .org-bk{background:#fff; border-radius:8px; padding:8px 10px; border-left:3px solid var(--gold);}
+.ppid-wrap .org-bk b,.ppid-wrap .org-am b{display:block; font-weight:600;}
+.ppid-wrap .org-bk span,.ppid-wrap .org-am span{display:block; font-size:11px; color:var(--muted); margin-top:1px;}
+.ppid-wrap .org-am{list-style:none; margin:8px 0 0; padding:0; display:grid; gap:6px;}
+.ppid-wrap .org-am li{background:#fff; border-radius:8px; padding:7px 10px;}
+.ppid-wrap .org-h{font:800 18px 'Manrope',sans-serif; margin:34px 0 2px;}
+.ppid-wrap .org-sub{font-size:12px; color:var(--muted); margin:0 0 14px;}
+.ppid-wrap .org-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; align-items:start;}
+.ppid-wrap .org-grp{background:#fff; border:1px solid #d5e3cd; border-radius:12px; padding:14px 16px;}
+.ppid-wrap .org-grp.wide{grid-column:1/-1;}
+.ppid-wrap .org-gh{display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:10px;}
+.ppid-wrap .org-gh h3{font:800 14px 'Manrope',sans-serif; margin:0; color:var(--green-dk);}
+.ppid-wrap .org-grp .cat-tag{background:#eef5ea;}
+.ppid-wrap .org-grp ul{list-style:none; margin:0; padding:0;}
+.ppid-wrap .org-grp.wide ul{columns:3; column-gap:22px;}
+.ppid-wrap .org-grp li{break-inside:avoid; padding:7px 0; border-top:1px solid var(--line);}
+.ppid-wrap .org-grp li:first-child{border-top:0;}
+.ppid-wrap .org-grp.wide li:nth-child(7),.ppid-wrap .org-grp.wide li:nth-child(12){border-top:0;}
+.ppid-wrap .org-grp li b{display:block; font-size:12.5px; font-weight:600; line-height:1.35;}
+.ppid-wrap .org-grp li span{display:block; font-size:11.5px; color:var(--muted); margin-top:1px;}
+@media(max-width:1100px){.ppid-wrap .org-top{grid-template-columns:1fr; gap:20px;}
+.ppid-wrap .org-left::after,.ppid-wrap .org-right::before{display:none;}
+.ppid-wrap .org-spine{order:-1; max-width:520px; width:100%; margin:0 auto;}
+.ppid-wrap .org-grid{grid-template-columns:1fr 1fr;}
+.ppid-wrap .org-grp.wide ul{columns:2;}}
+@media(max-width:700px){.ppid-wrap .org-grid{grid-template-columns:1fr;}
+.ppid-wrap .org-grp.wide ul{columns:1;}
+.ppid-wrap .org-lead img{width:60px; height:60px; flex-basis:60px;}}
+.ppid-wrap{width:min(1316px,100vw); position:relative; left:50%; margin-left:calc(min(1316px,100vw) / -2); padding:8px 16px 24px; box-sizing:border-box; text-align:left;}
+.ppid-wrap .cat{margin-bottom:16px;}
+.ppid-wrap{line-height:normal; color:var(--ink);}
+.ppid-wrap h1,.ppid-wrap h2,.ppid-wrap h3{color:inherit; text-transform:none; letter-spacing:normal; line-height:normal; font-style:normal;}
+.ppid-wrap .org-gh h3,.ppid-wrap .org-pt{color:var(--green-dk);}
+html,body{margin:0; padding:0; background:#fff; overflow-x:hidden;}
+.ppid-wrap{width:auto; left:0; margin:0 auto; max-width:1318px; padding:16px 16px 24px;}
+</style>
+</head>
+<body>
+<div class="ppid-wrap">
+  <div class="cat no-count" id="formulir">
+    <div class="cat-head"><h2>Formulir Layanan PPID</h2><span class="cat-tag">Permohonan Informasi • Pengajuan Keberatan</span></div>
+    <p class="cat-desc">Isi data dengan benar. Tanda terima akan dikirim ke email Anda.</p>
+    <div id="fStatus" role="status"></div>
+    <form id="ppidForm" novalidate>
+      <fieldset class="fs"><legend>Data kontak</legend><div class="fgrid">
+        <div class="fld"><label for="f-email">Email <b>*</b></label><input id="f-email" name="email" type="email" required></div>
+        <div class="fld"><label for="f-hp">Handphone <b>*</b></label><input id="f-hp" name="hp" type="tel" required></div>
+        <div class="fld"><label for="f-nama">Nama Lengkap (tanpa gelar) <b>*</b></label><input id="f-nama" name="nama" required></div>
+        <div class="fld"><label for="f-alamat">Alamat <b>*</b></label><textarea id="f-alamat" name="alamat" required></textarea></div>
+      </div></fieldset>
+      <fieldset class="fs"><legend>Identitas pemohon</legend><div class="fgrid">
+        <div class="fld"><label for="f-nik">Nomor Identitas (KTP/SIM/Paspor) <b>*</b></label><input id="f-nik" name="nik" inputmode="numeric" required></div>
+        <div class="fld"><label for="f-file">Lampiran (KTP/SIM/Paspor) <b>*</b></label><input id="f-file" name="file" type="file" accept=".jpg,.jpeg,.png,.pdf" required><small>Format: JPG, PNG, atau PDF. Maksimal 5 MB.</small></div>
+      </div></fieldset>
+      <fieldset class="fs"><legend>Jenis layanan &amp; kategori</legend><div class="fgrid">
+        <div class="fld"><label for="f-jenis">Jenis Layanan <b>*</b></label><select id="f-jenis" name="jenis" required><option value="">— Pilih Jenis Layanan —</option><option>Permohonan Informasi</option><option>Pengajuan Keberatan</option></select></div>
+        <div class="fld"><label for="f-kat">Kategori Pemohon <b>*</b></label><select id="f-kat" name="kategori" required><option value="">— Pilih Kategori —</option><option>Perseorangan</option><option>Kelompok Orang</option><option>Badan Hukum</option></select></div>
+      </div></fieldset>
+      <fieldset class="fs"><legend>Pernyataan / pertanyaan</legend>
+        <div class="fld"><label for="f-isi">Pernyataan/Pertanyaan <b>*</b></label><textarea id="f-isi" name="isi" required></textarea></div>
+      </fieldset>
+      <div class="hp" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="fbtns"><button type="reset" class="btn sec">Reset</button><button type="submit" class="btn pri" id="fSend">Kirim Formulir</button></div>
+    </form>
+  </div>
+</div>
+<script>
+var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyOVT4oYKz1CWQnuGPPXaOrdpG7g9kKKXmUmIDByiFQr_iC_Clwbe3nDqutLYp_WIE9WA/exec';   // <-- tempel URL Web App Apps Script di sini
+(function(){
+  var f = document.getElementById('ppidForm'); if(!f) return;
+  var st = document.getElementById('fStatus'), btn = document.getElementById('fSend');
+  function msg(t, cls){ st.textContent = t; st.className = cls || ''; sendHeight(); }
+  f.addEventListener('reset', function(){ st.className=''; st.textContent=''; });
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!f.checkValidity()){ f.reportValidity(); return; }
+    if(!ENDPOINT){ msg('Formulir belum diaktifkan (alamat penerima belum diisi).','err'); return; }
+    var file = f.file.files[0];
+    if(file.size > 5*1024*1024){ msg('Ukuran lampiran maksimal 5 MB.','err'); return; }
+    btn.disabled = true; msg('Mengirim…','ok');
+    var r = new FileReader();
+    r.onload = function(){
+      var d = {};
+      ['email','hp','nama','alamat','nik','jenis','kategori','isi','website'].forEach(function(k){ d[k] = f[k].value.trim(); });
+      d.file = { name:file.name, type:file.type, data:String(r.result).split(',')[1] };
+      fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)})
+        .then(function(){ f.reset(); msg('Terkirim. Tanda terima dikirim ke email Anda (cek juga folder spam).','ok'); })
+        .catch(function(){ msg('Gagal mengirim. Periksa koneksi lalu coba lagi.','err'); })
+        .then(function(){ btn.disabled = false; });
+    };
+    r.onerror = function(){ btn.disabled=false; msg('Lampiran tidak dapat dibaca.','err'); };
+    r.readAsDataURL(file);
+  });
+})();
+</script>
+<script>
+function sendHeight(){
+  var h = document.body.getBoundingClientRect().bottom + window.scrollY;
+  window.parent.postMessage({ ppidFrameHeight: Math.ceil(h) }, '*');
+}
+if(window.ResizeObserver){ new ResizeObserver(sendHeight).observe(document.body); }
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+setTimeout(sendHeight, 300);
+setTimeout(sendHeight, 1000);
+</script>
+</body>
+</html>
